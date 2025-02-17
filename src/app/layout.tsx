@@ -4,6 +4,8 @@ import favicon from "./static/favicon.ico";
 import { ThemeProvider } from "@/theme/theme-provider";
 import ColorModeButton from "@/components/color-mode";
 import { cookies } from "next/headers";
+import { ReactQueryClientProvider } from "./react-query-provider";
+import Header from "@/components/main-layout/header";
 
 export const metadata: Metadata = {
   title: "Eventify",
@@ -23,8 +25,10 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider colorMode={colorMode}>
-          <ColorModeButton />
-          {children}
+          <ReactQueryClientProvider>
+            <Header />
+            {children}
+          </ReactQueryClientProvider>
         </ThemeProvider>
       </body>
     </html>
