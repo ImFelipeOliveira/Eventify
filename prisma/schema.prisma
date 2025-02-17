@@ -10,12 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum RegStatus {
-  PENDENTE
-  CONFIRMADO
-  CANCELADO
-}
-
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -128,13 +122,20 @@ model Pessoa {
 }
 
 model Registration {
-  id        Int      @id @default(autoincrement())
-  event     Event    @relation(fields: [eventId], references: [id])
+  id        Int       @id @default(autoincrement())
+  event     Event     @relation(fields: [eventId], references: [id])
   eventId   Int
   payment   Payment?
-  pessoas   Pessoa[] @relation("registrationGroups")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  pessoas   Pessoa[]  @relation("registrationGroups")
+  status    RegStatus
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum RegStatus {
+  PENDENTE
+  CONFIRMADO
+  CANCELADO
 }
 
 model Payment {
