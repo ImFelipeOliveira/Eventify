@@ -19,11 +19,7 @@ export default function ColorModeButton() {
         justifyContent="center"
         margin={"5px"}
       >
-        {colorMode === "light" ? (
-          <MoonIcon />
-        ) : (
-          <SunIcon color={"whiteAlpha.400"} />
-        )}
+        {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
       </Button>
     </Flex>
   );
