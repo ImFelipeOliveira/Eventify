@@ -23,6 +23,12 @@ model User {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   Authenticator Authenticator[]
+  type          TypeUser
+}
+
+enum TypeUser {
+  ADMIN
+  NORMAL
 }
 
 model Account {
