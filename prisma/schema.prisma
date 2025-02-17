@@ -113,12 +113,18 @@ model Endereco {
 
 model Pessoa {
   id            Int            @id @default(autoincrement())
+  sexo          Sexo
   contato       Contato[]
   endereco      Endereco?
   registrations Registration[] @relation("registrationGroups")
   responsavel   Pessoa?        @relation("Responsavel", fields: [responsavelId], references: [id])
   responsavelId Int?
   pessoas       Pessoa[]       @relation("Responsavel")
+}
+
+enum Sexo {
+  MASCULINO
+  FEMININO
 }
 
 model Registration {
