@@ -1,22 +1,8 @@
-import { Provider } from "@/components/ui/provider";
-
-import Head from "next/head";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import favicon from "./static/favicon.ico";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
+import { ThemeProvider } from "@/theme/theme-provider";
+import ColorModeButton from "@/components/ui/color-mode";
 export const metadata: Metadata = {
   title: "Eventify",
   description: "",
@@ -30,8 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Provider>{children}</Provider>
+      <body>
+        <ThemeProvider>
+          <ColorModeButton />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
