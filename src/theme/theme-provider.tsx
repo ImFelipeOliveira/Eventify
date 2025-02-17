@@ -1,42 +1,43 @@
 "use client";
 
-import { ChakraProvider } from "@chakra-ui/react";
-import { ThemeProvider as NextThemeProvider } from "next-themes";
-import { system } from "./theme";
-import { getCookie, setCookie } from "cookies-next";
-import { ThemeContext } from "./theme-context";
-import { useEffect, useState } from "react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import React from "react";
+import { setCookie } from "cookies-next";
+import theme from "./theme";
+import { CacheProvider } from "@chakra-ui/next-js";
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const initialColorMode =
-    (getCookie("color-mode") as "light" | "dark") || "light";
-  const [theme, setTheme] = useState<"light" | "dark">(initialColorMode);
-
-  const setColorMode = () => {
-    setCookie("color-mode", theme);
-  };
-
-  useEffect(() => {
-    setColorMode();
-  }, [theme]);
-
-  const toggleTheme = () => {
-    const newMode = theme === "light" ? "dark" : "light";
-    setTheme(newMode);
-  };
-
+export const ThemeProvider = ({
+  colorMode,
+  children,
+}: {
+  colorMode?: any;
+  children: React.ReactNode;
+}) => {
   return (
-    <ChakraProvider value={system}>
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <NextThemeProvider
-          enableSystem
-          disableTransitionOnChange
-          defaultTheme="light"
-          forcedTheme={theme}
-        >
-          {children}
-        </NextThemeProvider>
-      </ThemeContext.Provider>
-    </ChakraProvider>
+    <CacheProvider>
+      <ChakraProvider
+        colorModeManager={{
+          type: "cookie",
+          ssr: true,
+          get: (init) => colorMode ?? init,
+          set: (value) => {
+            setCookie("chakra-ui-color-mode", value);
+          },
+        }}
+        theme={theme}
+        toastOptions={{
+          defaultOptions: {
+            duration: 9000,
+            isClosable: true,
+          },
+        }}
+      >
+        <ColorModeScript
+          initialColorMode={theme.config.initialColorMode}
+          type="cookie"
+        />
+        {children}
+      </ChakraProvider>
+    </CacheProvider>
   );
-}
+};
