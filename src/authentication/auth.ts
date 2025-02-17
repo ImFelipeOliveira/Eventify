@@ -2,12 +2,12 @@
 
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/authentication/prisma";
+import { prisma } from "@/lib/db";
 import Credentials from "next-auth/providers/credentials";
 import saltAndHashPassword from "@/lib/hash-password-util";
 import getUserFromDb from "@/lib/get-user-from-db";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
@@ -34,4 +34,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-});
+};
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
