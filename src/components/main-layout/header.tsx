@@ -45,9 +45,6 @@ export default function Header() {
         gap={4}
         px={4}
       >
-        {/* <Button colorScheme="red" onClick={undefined}>
-          Sair
-        </Button> */}
         <Button onClick={toggleColorMode}>
           {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
         </Button>
